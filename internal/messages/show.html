@@ -1,0 +1,12 @@
+<li class="mb-2 flex flex-row justify-end"
+    <%= if(!complete) { %>
+        hx-get="/messages/<%= id %>"
+        hx-trigger="load delay:200ms" hx-target="this" hx-swap="outerHTML"
+    <% } %>
+        _="on load go to the bottom of me"
+    >
+
+    <p class="bg-green-100 max-w-[80%] p-2 px-3 rounded mb-2">
+        <%= message %>
+    </p>
+</li>

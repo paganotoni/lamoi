@@ -1,0 +1,34 @@
+<form id="messageForm"  class="flex flex-col h-full max-h-full"
+        hx-disabled-elt="#message, #submitButton"
+        hx-post="/conversations/" hx-swap="beforeend" hx-target="#messages"
+        _="on htmx:afterSettle set the value of #message to '' then trigger focus on #message"
+    >
+
+    <input type="hidden" name="ID" id="conversationID" value="<%= conversation.ID %>" />
+
+    <div class="flex-grow overflow-scroll py-5 px-8" id="messages">
+        <ol class="flex flex-col" _="init go to the bottom of me">
+            <%= for (message) in conversation.Messages { %>
+                <% let container = "justify-end" %>
+                <% let msgClass = "bg-green-100" %>
+                <% if (message.Kind == "user") { %>
+                    <% container = "" %>
+                    <% msgClass = "" %>
+                <% } %>
+
+                <li class="mb-2 flex flex-row <%= container %>">
+                    <p class="<%= msgClass %> max-w-[80%] p-2 px-3 rounded bg-gray-100 mb-2 "><%= message.Message %></p >
+                </li >
+    		<% } %>
+        </ol >
+    </div>
+
+    <div class="relative px-5 pb-3">
+        <textarea id="message"  _="on keydown[key is 'Enter' and shiftKey is false] halt the event then trigger click on #submitButton" class="control w-full rounded-lg border-gray-400 text-xl" name="message" autofocus></textarea >
+        <button id="submitButton" type="submit" class="control absolute right-7 top-2.5 bg-blue-400 text-white p-3 rounded px-4 text-lg">Send</button>
+    </div>
+</form>
+
+<%= if (htmx) { %>
+    <div id="conversations" hx-swap-oob="outerHTML" hx-get="/conversations/" hx-trigger="load"></div>
+<% } %>

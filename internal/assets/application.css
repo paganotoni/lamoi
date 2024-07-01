@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#messageForm.htmx-request textarea {
+    @apply bg-gray-100;
+    pointer-events: none;
+    user-select: none;
+}
+
+#messageForm.htmx-request button {
+    @apply bg-blue-300;
+    pointer-events: none;
+    user-select: none;
+}

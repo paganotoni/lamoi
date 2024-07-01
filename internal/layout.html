@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeapKit</title>
+    <link rel="stylesheet" href="<%= assetPath(`/public/application.css`) %>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <script src="https://unpkg.com/hyperscript.org@0.9.8"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
+    <script src="https://unpkg.com/htmx-ext-disable-element@2.0.0/disable-element.js"></script>
+</head>
+<body class="h-full flex flex-row min-h-full relative">
+    <div class="flex flex-row w-full h-full">
+        <aside class="w-[300px] bg-gray-100 flex flex-col p-3">
+            <div class="flex flex-row justify-between">
+                <h1 class="text-3xl font-bold underline">Lamoi</h1>
+                <a href="/" class="border text-white rounded-md p-2 text-center bg-blue-400">New</a>
+            </div>
+
+            <div hx-get="/conversations/" hx-trigger="load" hx-swap="outerHTML"></div>
+        </aside>
+        <section class="flex flex-col gap-4 w-full" >
+            <header class="flex flex-row justify-between px-8 pt-3 border-b pb-2 -mb-4">
+                <span class="flex flex-row items-center gap-2 hover:underline cursor">
+                    <h2 class="text-xl font-medium" id="conversationName"><%= conversation.Name %></h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                </span >
+
+                <div hx-get="/ollama/status" hx-trigger="load" hx-swap="outerHTML"></div>
+            </header >
+
+            <main class="overflow-scroll flex flex-col gap-5 flex-grow">
+                <%= yield %>
+            </main>
+        </section>
+    </div>
+</body>
+</html>
