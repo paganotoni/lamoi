@@ -12,7 +12,6 @@ Install dependencies:
 go install github.com/leapkit/leapkit/kit@latest
 
 # Setting up the database
-kit db create
 kid db migrate
 ```
 
