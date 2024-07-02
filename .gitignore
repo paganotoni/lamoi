@@ -1,2 +1,4 @@
 bin/*
 leapkit.db*
+public/*.js
+public/*.css
