@@ -1,16 +1,15 @@
 ## Lamoi
-
 Lamoi is a UI for ollama. It uses the Ollama API and stores conversations data in a local SQLite database
 
 ### Getting started
 
-### Setup
+#### Setup
 Install The kit CLI.
 ```sh
 go install github.com/leapkit/leapkit/kit@latest
 ```
 
-### Migrate database
+#### Migrate database
 Kit takers care of this part:
 ```
 kid db migrate
@@ -24,14 +23,18 @@ kit serve
 
 And open `http://localhost:3000` in your browser.
 
-### Building the application
-
+### Building the application binary
 To generate a distributable binary you can run the following command. This will build the TailwindCSS and the application.
 
+#### Build the CSS
+Building TailwindCSS with the tailo build command.
 ```sh
-# Building TailwindCSS with tailo
-> go run github.com/paganotoni/tailo/cmd/build@a4899cd
+go run github.com/paganotoni/tailo/cmd/build@v1.0.7
+```
 
-# Building the app
-> go build -tags osusergo,netgo -buildvcs=false -o bin/app ./cmd/app
+#### Building the app
+Building the application binary with Go.
+
+```
+go build -tags osusergo,netgo -buildvcs=false -o bin/app ./cmd/app
 ```
