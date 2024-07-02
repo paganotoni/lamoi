@@ -5,23 +5,19 @@ Lamoi is a UI for ollama. It uses the Ollama API and stores conversations data i
 ### Getting started
 
 ### Setup
-Install dependencies:
-
+Install The kit CLI.
 ```sh
-# The kit CLI.
 go install github.com/leapkit/leapkit/kit@latest
 ```
+
 ### Migrate database
 Kit takers care of this part:
-
 ```
 kid db migrate
 ```
 
 ### Running the application
-
 To run the application in development mode execute:
-
 ```sh
 kit serve
 ```
