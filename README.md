@@ -10,8 +10,11 @@ Install dependencies:
 ```sh
 # The kit CLI.
 go install github.com/leapkit/leapkit/kit@latest
+```
+### Migrate database
+Kit takers care of this part:
 
-# Setting up the database
+```
 kid db migrate
 ```
 
