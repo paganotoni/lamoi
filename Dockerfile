@@ -22,4 +22,5 @@ WORKDIR /bin/
 COPY --from=builder /src/app/bin/app .
 COPY --from=builder /src/app/bin/migrate .
 
+# Running migrations and then the app
 CMD migrate && app
