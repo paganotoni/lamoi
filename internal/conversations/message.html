@@ -1,0 +1,10 @@
+<% let container = "justify-end" %>
+<% let msgClass = "bg-gray-100" %>
+<% if (message.Kind == "user") { %>
+    <% container = "" %>
+    <% msgClass = "bg-white border border-gray-500" %>
+<% } %>
+
+<li class="mb-2 flex flex-row <%= container %>">
+    <p class="<%= msgClass %> max-w-[80%] p-3 px-4 rounded-xl mb-2 "><%= message.Message %></p >
+</li >

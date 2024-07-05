@@ -73,7 +73,14 @@ func Send(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	rw := render.FromCtx(r.Context())
-	rw.Set("message", message)
+	rw.Set("question", struct {
+		Message string
+		Kind    string
+	}{
+		Message: message,
+		Kind:    "user",
+	})
+
 	rw.Set("title", message)
 	rw.Set("pendingID", messageID)
 	rw.Set("conversationID", conversationID)

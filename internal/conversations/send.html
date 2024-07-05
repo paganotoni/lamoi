@@ -1,12 +1,10 @@
-<li class="mb-2 flex flex-row">
-    <p class="max-w-[80%] p-2 px-3 rounded bg-gray-100 mb-2 "><%= message %></p>
-</li >
+<%= partial("conversations/message.html", {message: question}) %>
 
 <li class="mb-2 flex flex-row justify-end"
     hx-get="/messages/<%= pendingID %>"
     hx-trigger="load delay:1s" hx-target="this" hx-swap="outerHTML">
 
-    <p class="bg-green-100 max-w-[80%] p-2 px-3 rounded mb-2"></p>
+    <p class="bg-gray-100 max-w-[80%] p-3 px-4 rounded-xl mb-2"></p>
 </li>
 
 <%= if(isNew) { %>

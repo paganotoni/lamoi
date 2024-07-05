@@ -5,12 +5,14 @@ import (
 	"embed"
 	"net/http"
 	"os"
+	"time"
 
 	"lamoi/internal/conversations"
 	"lamoi/internal/messages"
 	"lamoi/internal/ollama"
 	"lamoi/public"
 
+	"github.com/dustin/go-humanize"
 	"github.com/leapkit/leapkit/core/assets"
 	"github.com/leapkit/leapkit/core/db"
 	"github.com/leapkit/leapkit/core/render"
@@ -46,6 +48,9 @@ func New() Server {
 		render.WithHelpers(render.AllHelpers),
 		render.WithHelpers(map[string]any{
 			"assetPath": assetsManager.PathFor,
+			"timeSince": func(t time.Time) string {
+				return humanize.Time(t)
+			},
 		}),
 	)
 

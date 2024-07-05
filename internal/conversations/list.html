@@ -1,14 +1,19 @@
-<div id="conversations">
-    <h2 class="text-xs uppercase tracking-wider mt-4 -mb-1">Conversations</h2>
+<div id="conversations" class="pt-3 overflow-scroll px-6">
     <ul class="flex flex-col py-3 gap-2">
+        <% let dd = "" %>
         <%= for (convo) in conversations { %>
-            <% let current = "bg-gray-100"%>
+            <% let current = "" %>
             <% if (convo.ID == id) { %>
-                <% current = "bg-white" %>
+                <% current = "bg-white font-medium" %>
             <% }%>
 
-            <li class="<%= current %> rounded-md hover border hover:border-gray-300" oo="<%= id %>">
-                <a href="/conversations/<%= convo.ID %>" class=" p-2 px-3  flex justify-between">
+            <%= if (dd != convo.Date.Format("01022006")) { %>
+                <li class="text-xs font-bold tracking-wide text-gray-500 pt-5"><%= timeSince(convo.Date) %></li>
+                <%= dd = convo.Date.Format("01022006") %>
+            <% } %>
+
+            <li class="<%= current %> rounded-md" date="<%= convo.Date.Format(`01022006`) %>">
+                <a href="/conversations/<%= convo.ID %>" class="px-1.5 py-2 flex justify-between">
                     <span class="block max-w-[220px] truncate"><%= convo.Name %></span>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
                 </a>

@@ -1,6 +1,7 @@
 package conversations
 
 import (
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -33,6 +34,7 @@ func List(w http.ResponseWriter, r *http.Request) {
 
 	err = rw.RenderClean("conversations/list.html")
 	if err != nil {
+		fmt.Println("Error rendering template: ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

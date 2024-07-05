@@ -1,6 +1,9 @@
 package conversations
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/leapkit/leapkit/core/db"
 	"github.com/oklog/ulid/v2"
 )
@@ -9,6 +12,7 @@ type conversation struct {
 	ID       string
 	Name     string
 	Messages []message
+	Date     time.Time
 }
 
 type message struct {
@@ -37,6 +41,7 @@ func (s *service) Create(message string) (string, error) {
 	id := ulid.Make()
 	_, err = conn.Exec("INSERT INTO conversations (id, name) VALUES (?, ?)", id.String(), message)
 	if err != nil {
+		fmt.Println("Error inserting conversation: ", err)
 		return "", err
 	}
 
@@ -61,6 +66,7 @@ func (s *service) Find(id string) (*conversation, error) {
 
 	defer rows.Close()
 	conv := &conversation{
+		ID:       id,
 		Name:     "",
 		Messages: []message{},
 	}
@@ -104,7 +110,7 @@ func (s *service) List() ([]conversation, error) {
 		return nil, err
 	}
 
-	rows, err := conn.Query("SELECT id, name FROM conversations ORDER BY created_at DESC")
+	rows, err := conn.Query("SELECT id, name, created_at as Date FROM conversations ORDER BY created_at DESC")
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +119,7 @@ func (s *service) List() ([]conversation, error) {
 	conversations := []conversation{}
 	for rows.Next() {
 		var c conversation
-		err = rows.Scan(&c.ID, &c.Name)
+		err = rows.Scan(&c.ID, &c.Name, &c.Date)
 		if err != nil {
 			return nil, err
 		}

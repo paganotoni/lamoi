@@ -9,16 +9,7 @@
     <div class="flex-grow overflow-scroll py-5 px-8" id="messages">
         <ol class="flex flex-col" _="init go to the bottom of me">
             <%= for (message) in conversation.Messages { %>
-                <% let container = "justify-end" %>
-                <% let msgClass = "bg-green-100" %>
-                <% if (message.Kind == "user") { %>
-                    <% container = "" %>
-                    <% msgClass = "" %>
-                <% } %>
-
-                <li class="mb-2 flex flex-row <%= container %>">
-                    <p class="<%= msgClass %> max-w-[80%] p-2 px-3 rounded bg-gray-100 mb-2 "><%= message.Message %></p >
-                </li >
+                <%= partial("conversations/message.html") %>
     		<% } %>
         </ol >
     </div>
