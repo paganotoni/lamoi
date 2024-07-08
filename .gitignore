@@ -1,4 +1,4 @@
 bin/*
-leapkit.db*
+lamoi.db*
 public/*.js
 public/*.css
