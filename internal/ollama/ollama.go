@@ -61,6 +61,7 @@ func (s service) Generate(id, message, context string, updateFn func(content, co
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		fmt.Println("ollama service returned status", resp.StatusCode)
 		return fmt.Errorf("ollama service returned status %d", resp.StatusCode)
 	}
 

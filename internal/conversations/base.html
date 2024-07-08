@@ -16,7 +16,13 @@
 
     <div class="relative px-5 pb-3">
         <textarea id="message"  _="on keydown[key is 'Enter' and shiftKey is false] halt the event then trigger click on #submitButton" class="control w-full rounded-lg border-gray-400 text-xl" name="message" autofocus></textarea >
-        <button id="submitButton" type="submit" class="control absolute right-7 top-2.5 bg-blue-400 text-white p-3 rounded px-4 text-lg">Send</button>
+        <button id="submitButton" type="submit" class="control absolute right-7 top-2.5 bg-blue-500 text-white p-3 rounded px-4 text-lg flex flex-row items-center gap-1.5 hover:bg-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+            </svg>
+
+            Send
+        </button>
     </div>
 </form>
 
