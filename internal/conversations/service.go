@@ -155,3 +155,17 @@ func (s *service) Update(messageID, message, context string) error {
 
 	return nil
 }
+
+func (s *service) UpdateName(id string, name string) error {
+	conn, err := s.db()
+	if err != nil {
+		return err
+	}
+
+	_, err = conn.Exec("UPDATE conversations SET name = ? WHERE id = ?", name, id)
+	if err != nil {
+		return fmt.Errorf("error updating conversation name: %v", err)
+	}
+
+	return nil
+}

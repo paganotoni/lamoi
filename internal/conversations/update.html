@@ -1,0 +1,5 @@
+<h2 class="text-xl font-medium" id="conversationName" hx-get="/conversations/<%= conversation.ID %>/edit" hx-swap="outerHTML" hx-trigger="click">
+    <%= conversation.Name %>
+</h2>
+
+<div id="conversations" hx-swap-oob="outerHTML" hx-get="/conversations/" hx-trigger="load"></div>

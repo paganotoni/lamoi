@@ -71,6 +71,8 @@ func New() Server {
 	r.Use(server.InCtxMiddleware("messages", messages.NewService(DB)))
 
 	r.HandleFunc("GET /{$}", conversations.New)
+	r.HandleFunc("GET /conversations/{id}/edit", conversations.Edit)
+	r.HandleFunc("PUT /conversations/{id}/name", conversations.Update)
 	r.HandleFunc("POST /conversations/{$}", conversations.Send)
 	r.HandleFunc("GET /conversations/{id}", conversations.Show)
 	r.HandleFunc("GET /conversations/{$}", conversations.List)
