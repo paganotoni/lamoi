@@ -1,6 +1,8 @@
 ## Lamoi
 Lamoi is a UI for ollama. It uses the Ollama API and stores conversations data in a local SQLite database
 
+![lamoi](https://github.com/paganotoni/lamoi/assets/645522/de2541b3-de4a-4dfc-851c-23fc60067ab7)
+
 ### Getting started
 
 #### Setup
