@@ -41,6 +41,8 @@ func (r Response) EncodedContext() string {
 // return an error if something happened.
 func (s service) Generate(id, message, context string, updateFn func(content, context string)) error {
 	message = strings.TrimSpace(message)
+	message = strings.ReplaceAll(message, "\n", "")
+
 	cson := []byte("[]")
 	if context != "" {
 		var err error
@@ -62,6 +64,10 @@ func (s service) Generate(id, message, context string, updateFn func(content, co
 
 	if resp.StatusCode != http.StatusOK {
 		fmt.Println("ollama service returned status", resp.StatusCode)
+		bb := make([]byte, 1024)
+		n, _ := resp.Body.Read(bb)
+		fmt.Println("Error response:", string(bb[:n]))
+
 		return fmt.Errorf("ollama service returned status %d", resp.StatusCode)
 	}
 
