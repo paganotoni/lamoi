@@ -11,6 +11,12 @@
             <%= for (message) in conversation.Messages { %>
                 <%= partial("conversations/message.html") %>
     		<% } %>
+            <%= if (len(conversation.Messages) == 0) { %>
+                <li class="text-gray-500">
+                    👋 Welcome to Lamoi. To start a conversation send your first message, Lamoi will make sure to respond with
+                    a message as soon as possible.
+                </li>
+            <% } %>
         </ol >
     </div>
 
