@@ -1,6 +1,6 @@
 <form id="messageForm"  class="flex flex-col h-full max-h-full"
         hx-disabled-elt="#message, #submitButton"
-        hx-post="/conversations/" hx-swap="beforeend" hx-target="#messages"
+        hx-post="/conversations/" hx-swap="beforeend" hx-target="#messages" hx-include="#model"
         _="on htmx:afterSettle set the value of #message to '' then trigger focus on #message"
     >
 
@@ -11,8 +11,9 @@
             <%= for (message) in conversation.Messages { %>
                 <%= partial("conversations/message.html") %>
     		<% } %>
+
             <%= if (len(conversation.Messages) == 0) { %>
-                <li class="text-gray-500">
+                <li class="text-gray-500" id="defaultMessage">
                     👋 Welcome to Lamoi. To start a conversation send your first message, Lamoi will make sure to respond with
                     a message as soon as possible.
                 </li>

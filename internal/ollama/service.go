@@ -5,18 +5,17 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 )
 
-var ollamaURL = cmp.Or(os.Getenv("OLLAMA_URL"), "http://localhost:11434/api")
-
 // Builds a new service
 func NewService() *service {
 	return &service{
-		url:    ollamaURL,
+		url:    cmp.Or(os.Getenv("OLLAMA_URL"), "http://localhost:11434/api"),
 		client: http.Client{},
 	}
 }
@@ -39,7 +38,7 @@ func (r Response) EncodedContext() string {
 
 // Generate the response to a message in a conversation
 // return an error if something happened.
-func (s service) Generate(id, message, context string, updateFn func(content, context string)) error {
+func (s service) Generate(id, model, message, context string, updateFn func(content, context string)) error {
 	message = strings.TrimSpace(message)
 	message = strings.ReplaceAll(message, "\n", "")
 
@@ -53,8 +52,8 @@ func (s service) Generate(id, message, context string, updateFn func(content, co
 	}
 
 	payload := fmt.Sprintf(
-		`{"model": "llama3","prompt": "%v", "context": %s}`,
-		message, cson,
+		`{"model": "%s","prompt": "%v", "context": %s}`,
+		model, message, cson,
 	)
 
 	resp, err := s.client.Post(s.url+"/generate", "", strings.NewReader(payload))
@@ -124,4 +123,39 @@ func (s service) IsOnline() bool {
 	}
 
 	return true
+}
+
+func (s service) Models() ([]string, error) {
+	resp, err := s.client.Get(s.url + "/tags")
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("ollama service returned status %d", resp.StatusCode)
+	}
+
+	bb, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	type mms struct {
+		Models []struct {
+			Name string `json:"name"`
+		} `json:"models"`
+	}
+
+	mx := mms{}
+	err = json.Unmarshal(bb, &mx)
+	if err != nil {
+		return nil, err
+	}
+
+	models := make([]string, len(mx.Models))
+	for i, m := range mx.Models {
+		models[i] = strings.Split(m.Name, ":")[0]
+	}
+
+	return models, nil
 }

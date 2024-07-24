@@ -9,6 +9,14 @@
 
 <%= if(isNew) { %>
     <input type="hidden" hx-swap-oob="outerHTML" id="conversationID" name="ID" value="<%= conversationID %>">
-    <h2 class="text-xl font-medium" id="conversationName" hx-swap-oob="outerHTML"><%= title %></h2>
     <div id="conversations" hx-swap-oob="outerHTML" hx-get="/conversations/" hx-trigger="load"></div>
+    <div id="conversationName" hx-swap-oob="outerHTML">
+       <%= partial("conversations/name.html", {
+            ID: conversation.ID,
+            Model: conversation.Model,
+            Name: conversation.Name,
+       }) %>
+    </div>
+
+    <div id="defaultMessage" hx-swap-oob="innerHTML"></div>
 <% } %>

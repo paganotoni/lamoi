@@ -1,12 +1,10 @@
-module.exports = {
-  content: [
+export const content = [
     'internal/*.html',
     'internal/**/*.html',
-    "internal/public/*.js",  
-  ],
+    "internal/public/*.js",
+];
 
-  plugins: [
+export const plugins = [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-  ],
-}
+];

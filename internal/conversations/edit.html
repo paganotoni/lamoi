@@ -1,4 +1,5 @@
-<form hx-put="/conversations/<%= conversation.ID %>/name" class="flex flex-row gap-2">
+<form hx-put="/conversations/<%= conversation.ID %>/name" class="flex flex-row gap-2" hx-target="this" hx-swap="outerHTML">
     <input type="text" id="name" name="Name" value="<%= conversation.Name %>"class="w-[400px] rounded border border-gray-400" autofocus>
+
     <button class="rounded bg-blue-400 p-2 px-3.5 text-white cursor-pointer">Save</button>
 </form>

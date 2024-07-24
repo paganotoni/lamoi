@@ -79,6 +79,8 @@ func New() Server {
 	r.HandleFunc("GET /messages/{id}", messages.Show)
 
 	r.HandleFunc("GET /ollama/status", ollama.Status)
+	r.HandleFunc("GET /ollama/models", ollama.Models)
+
 	// Mounting the assets manager at the end of the routes
 	// so that it can serve the public assets.
 	r.HandleFunc(assetsManager.HandlerPattern(), assetsManager.HandlerFn)

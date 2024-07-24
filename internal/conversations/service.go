@@ -13,6 +13,7 @@ type conversation struct {
 	Name     string
 	Messages []message
 	Date     time.Time
+	Model    string
 }
 
 type message struct {
@@ -32,14 +33,14 @@ type service struct {
 
 // Create creates a new conversation and returns the ID
 // of the conversation
-func (s *service) Create(message string) (string, error) {
+func (s *service) Create(message, model string) (string, error) {
 	conn, err := s.db()
 	if err != nil {
 		return "", err
 	}
 
 	id := ulid.Make()
-	_, err = conn.Exec("INSERT INTO conversations (id, name) VALUES (?, ?)", id.String(), message)
+	_, err = conn.Exec("INSERT INTO conversations (id, name, model) VALUES (?, ?, ?)", id.String(), message, model)
 	if err != nil {
 		fmt.Println("Error inserting conversation: ", err)
 		return "", err
@@ -81,7 +82,7 @@ func (s *service) Find(id string) (*conversation, error) {
 		conv.Messages = append(conv.Messages, m)
 	}
 
-	err = conn.QueryRow("SELECT name FROM conversations WHERE id = ?", id).Scan(&conv.Name)
+	err = conn.QueryRow("SELECT name, model FROM conversations WHERE id = ?", id).Scan(&conv.Name, &conv.Model)
 	if err != nil {
 		return nil, err
 	}
@@ -97,6 +98,21 @@ func (s *service) ContextFor(id string) (string, error) {
 
 	var context string
 	err = conn.QueryRow("SELECT context FROM conversations WHERE id = ?", id).Scan(&context)
+	if err != nil {
+		return "", err
+	}
+
+	return context, nil
+}
+
+func (s *service) ModelFor(id string) (string, error) {
+	conn, err := s.db()
+	if err != nil {
+		return "", err
+	}
+
+	var context string
+	err = conn.QueryRow("SELECT model FROM conversations WHERE id = ?", id).Scan(&context)
 	if err != nil {
 		return "", err
 	}
