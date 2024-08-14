@@ -13,7 +13,6 @@ import (
 	"lamoi/public"
 
 	"github.com/dustin/go-humanize"
-	"github.com/leapkit/leapkit/core/assets"
 	"github.com/leapkit/leapkit/core/db"
 	"github.com/leapkit/leapkit/core/render"
 	"github.com/leapkit/leapkit/core/server"
@@ -40,20 +39,6 @@ type Server interface {
 }
 
 func New() Server {
-	assetsManager := assets.NewManager(public.Files)
-	renderMW := render.Middleware(
-		render.TemplateFS(tmpls, "internal"),
-
-		render.WithDefaultLayout("layout.html"),
-		render.WithHelpers(render.AllHelpers),
-		render.WithHelpers(map[string]any{
-			"assetPath": assetsManager.PathFor,
-			"timeSince": func(t time.Time) string {
-				return humanize.Time(t)
-			},
-		}),
-	)
-
 	// Creating a new server instance with the
 	// default host and port values.
 	r := server.New(
@@ -63,9 +48,20 @@ func New() Server {
 			cmp.Or(os.Getenv("SESSION_SECRET"), "d720c059-9664-4980-8169-1158e167ae57"),
 			cmp.Or(os.Getenv("SESSION_NAME"), "leapkit_session"),
 		),
+
+		server.WithAssets(public.Files),
 	)
 
-	r.Use(renderMW)
+	r.Use(render.Middleware(
+		render.TemplateFS(tmpls, "internal"),
+		render.WithDefaultLayout("layout.html"),
+		render.WithHelpers(map[string]any{
+			"timeSince": func(t time.Time) string {
+				return humanize.Time(t)
+			},
+		}),
+	))
+
 	r.Use(server.InCtxMiddleware("ollamaService", ollama.NewService()))
 	r.Use(server.InCtxMiddleware("conversations", conversations.NewService(DB)))
 	r.Use(server.InCtxMiddleware("messages", messages.NewService(DB)))
@@ -80,10 +76,6 @@ func New() Server {
 
 	r.HandleFunc("GET /ollama/status", ollama.Status)
 	r.HandleFunc("GET /ollama/models", ollama.Models)
-
-	// Mounting the assets manager at the end of the routes
-	// so that it can serve the public assets.
-	r.HandleFunc(assetsManager.HandlerPattern(), assetsManager.HandlerFn)
 
 	return r
 }
