@@ -14,7 +14,7 @@ go install github.com/leapkit/leapkit/kit@latest
 #### Migrate database
 Kit takers care of this part:
 ```
-kid db migrate
+kit db migrate
 ```
 
 ### Running the application
